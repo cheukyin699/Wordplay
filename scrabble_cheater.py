@@ -8,16 +8,21 @@ if __name__ == "__main__":
 
     rack = set(sys.argv[1].lower()) #Constant time membership checking
     valid_words = []
+    un = sys.argv[1].count('?')
 
     for word in wordlist:
         # Make a copy of the rack for every new word, so we can manipulate it
         # without compromising the original rack.
         available_letters = set(rack)
+        unknowns = un
 
         for letter in word.lower():
-            if letter not in available_letters:
+            if letter not in available_letters and unknowns == 0:
                 break
-            available_letters.remove(letter)
+            if unknowns != 0 and letter not in available_letters:
+                unknowns -= 1
+            else:
+       	        available_letters.remove(letter)
         else:
             # Calculate the Scrabble score.
             score = 0
